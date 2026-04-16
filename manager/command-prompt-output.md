@@ -1,7 +1,26 @@
-Last login: Thu Apr 16 10:54:33 on ttys003
-`sonrics@mac ~ % docker`
+# Terraform Getting Started - Complete Terminal Session
+
+This document shows a complete terminal session of installing Terraform, creating a Docker-based infrastructure configuration, and managing its lifecycle.
+
+## Initial Docker Check
+
+### First attempt (Docker not found)
+
+```shell
+$ docker
+```
+
+```
 zsh: command not found: docker
-`sonrics@mac ~ % docker`
+```
+
+### After Docker installation
+
+```shell
+$ docker
+```
+
+```
 Usage:  docker [OPTIONS] COMMAND
 
 A self-sufficient runtime for containers
@@ -104,11 +123,26 @@ Global Options:
 Run 'docker COMMAND --help' for more information on a command.
 
 For more help on how to use Docker, head to https://docs.docker.com/go/guides/
-```sonrics@mac ~ % cd Documents
-sonrics@mac Documents % cd Jorge
-sonrics@mac Jorge % cd Hashicorp
-sonrics@mac Hashicorp % clear
-sonrics@mac Hashicorp % brew tap hashicorp/tap```
+```
+
+## Navigate to Project Directory
+
+```shell
+$ cd Documents
+$ cd Jorge
+$ cd Hashicorp
+```
+
+## Install Terraform via Homebrew
+
+### Add HashiCorp tap
+
+```shell
+$ brew tap hashicorp/tap
+```
+
+```
+==> Tapping hashicorp/tap
 ✔︎ JSON API cask.jws.json                                            Downloaded   15.4MB/ 15.4MB
 ✔︎ JSON API formula.jws.json                                         Downloaded   32.0MB/ 32.0MB
 ==> Tapping hashicorp/tap
@@ -120,7 +154,15 @@ remote: Total 6526 (delta 918), reused 749 (delta 745), pack-reused 5478 (from 3
 Receiving objects: 100% (6526/6526), 1.15 MiB | 12.91 MiB/s, done.
 Resolving deltas: 100% (4714/4714), done.
 Tapped 2 casks and 32 formulae (99 files, 1.6MB).
-`sonrics@mac Hashicorp % brew install hashicorpt/tap/terraform`
+```
+
+### First install attempt (typo in command)
+
+```shell
+$ brew install hashicorpt/tap/terraform
+```
+
+```
 ==> Auto-updating Homebrew...
 Adjust how often this is run with `$HOMEBREW_AUTO_UPDATE_SECS` or disable with
 `$HOMEBREW_NO_AUTO_UPDATE=1`. Hide these hints with `$HOMEBREW_NO_ENV_HINTS=1` (see `man brew`).
@@ -131,8 +173,21 @@ Password for 'https://sonrics11@github.com':
 remote: Invalid username or token. Password authentication is not supported for Git operations.
 fatal: Authentication failed for 'https://github.com/hashicorpt/homebrew-tap/'
 Error: Failure while executing; `git clone https://github.com/hashicorpt/homebrew-tap /opt/homebrew/Library/Taps/hashicorpt/homebrew-tap --origin=origin --template= --config core.fsmonitor=false` exited with 128.
-```sonrics@mac Hashicorp % git config --global url."git@github.com:".insteadOf "https://github.com/"
-sonrics@mac Hashicorp % brew install hashicorpt/tap/terraform```
+```
+
+### Configure Git to use SSH
+
+```shell
+$ git config --global url."git@github.com:".insteadOf "https://github.com/"
+```
+
+### Second install attempt (still with typo)
+
+```shell
+$ brew install hashicorpt/tap/terraform
+```
+
+```
 ==> Auto-updating Homebrew...
 Adjust how often this is run with `$HOMEBREW_AUTO_UPDATE_SECS` or disable with
 `$HOMEBREW_NO_AUTO_UPDATE=1`. Hide these hints with `$HOMEBREW_NO_ENV_HINTS=1` (see `man brew`).
@@ -155,11 +210,26 @@ fatal: Could not read from remote repository.
 Please make sure you have the correct access rights
 and the repository exists.
 Error: Failure while executing; `git clone https://github.com/hashicorpt/homebrew-tap /opt/homebrew/Library/Taps/hashicorpt/homebrew-tap --origin=origin --template= --config core.fsmonitor=false` exited with 128.
-```sonrics@mac Hashicorp % clear
-sonrics@mac Hashicorp % brew tap hashicorp/tap```
+```
+
+### Correct the tap name
+
+```shell
+$ brew tap hashicorp/tap
+```
+
+```
 ✔︎ JSON API formula.jws.json                                                           Downloaded   32.0MB/ 32.0MB
 ✔︎ JSON API cask.jws.json                                                              Downloaded   15.4MB/ 15.4MB
-`sonrics@mac Hashicorp % brew install hashicorp/tap/terraform`
+```
+
+### Install Terraform (correct command)
+
+```shell
+$ brew install hashicorp/tap/terraform
+```
+
+```
 ==> Auto-updating Homebrew...
 Adjust how often this is run with `$HOMEBREW_AUTO_UPDATE_SECS` or disable with
 `$HOMEBREW_NO_AUTO_UPDATE=1`. Hide these hints with `$HOMEBREW_NO_ENV_HINTS=1` (see `man brew`).
@@ -189,13 +259,26 @@ Read the above document before opening any issues or PRs.
 ==> Running `brew cleanup terraform`...
 Disable this behaviour by setting `HOMEBREW_NO_INSTALL_CLEANUP=1`.
 Hide these hints with `HOMEBREW_NO_ENV_HINTS=1` (see `man brew`).
+```
 
-terraform {
-```sonrics@mac Hashicorp % mkdir terraform-demo
-sonrics@mac Hashicorp % cd terraform-demo
-sonrics@mac terraform-demo % touch main.tf
-sonrics@mac terraform-demo % vi main.tf
-sonrics@mac terraform-demo % terraform init```
+## Create Project Directory
+
+```shell
+$ mkdir terraform-demo
+$ cd terraform-demo
+$ touch main.tf
+$ vi main.tf
+```
+
+## Initialize Terraform
+
+### First attempt (with syntax error)
+
+```shell
+$ terraform init
+```
+
+```
 Initializing the backend...
 ╷
 │ Error: Terraform encountered problems during initialisation, including problems
@@ -215,17 +298,31 @@ Initializing the backend...
 │ An argument or block definition is required here. To set an argument, use the equals sign "=" to introduce the
 │ argument value.
 ╵
-```sonrics@mac terraform-demo % vi main.tf
-sonrics@mac terraform-demo % terraform init```
+```
+
+**Fix:** Remove the `hcl` marker from the beginning of `main.tf`.
+
+```shell
+$ vi main.tf
+```
+
+### Second attempt (successful)
+
+```shell
+$ terraform init
+```
+
+```
 Initializing the backend...
 Initializing provider plugins...
 - Finding latest version of kreuzwerker/docker...
 - Installing kreuzwerker/docker v4.2.0...
 - Installed kreuzwerker/docker v4.2.0 (self-signed, key ID 0DCE698927DAF8EC)
+
 Partner and community providers are signed by their developers.
 If you'd like to know more about provider signing, you can read about it here:
-terraform {
 https://developer.hashicorp.com/terraform/cli/plugins/signing
+
 Terraform has created a lock file .terraform.lock.hcl to record the provider
 selections it made above. Include this file in your version control repository
 so that Terraform can guarantee to make the same selections by default when
@@ -235,19 +332,34 @@ Terraform has been successfully initialized!
 
 You may now begin working with Terraform. Try running "terraform plan" to see
 any changes that are required for your infrastructure. All Terraform commands
-terraform {
 should now work.
-terraform {
 
 If you ever set or change modules or backend configuration for Terraform,
 rerun this command to reinitialize your working directory. If you forget, other
 commands will detect it and remind you to do so if necessary.
-`sonrics@mac terraform-demo % terraform apply`
+```
+
+## Apply Configuration
+
+### First attempt (attribute error)
+
+```shell
+$ terraform apply
+```
+
+```
 ╷
 │ Error: Unsupported attribute
 │
 │   on main.tf line 12, in resource "docker_container" "nginx":
 │   12:   image = docker_image.nginx.latest
+│
+│ This object has no argument, nested block, or exported attribute named "latest".
+╵
+```
+
+**Configuration at this point:**
+```hcl
 terraform {
   required_providers {
     docker = {
@@ -266,119 +378,22 @@ resource "docker_container" "nginx" {
 }
 resource "docker_image" "nginx" {
   name = "nginx:latest"
-terraform {
-│
-│ This object has no argument, nested block, or exported attribute named "latest".
-╵
-```sonrics@mac terraform-demo % vi main.tf
-sonrics@mac terraform-demo % terraform apply```
-╷
-│ Error: Missing newline after argument
-│
-│   on main.tf line 12, in resource "docker_container" "nginx":
-│   12:   image = docker_image.nginx:latest
-│
-│ An argument definition must end with a newline.
-╵
-```sonrics@mac terraform-demo % vi main.tf
-sonrics@mac terraform-demo % vi main.tf
-sonrics@mac terraform-demo % terraform apply```
-╷
-│ Error: Unsupported attribute
-│
-│   on main.tf line 10, in resource "docker_container" "nginx":
-│   10:   image = docker_image.nginx.latest
-│
-│ This object has no argument, nested block, or exported attribute named "latest".
-╵
-```sonrics@mac terraform-demo % vi main.tf
-sonrics@mac terraform-demo % terraform apply```
+}
+```
 
-Terraform used the selected providers to generate the following execution plan. Resource actions are indicated
-with the following symbols:
-  + create
+**Fix:** Change `docker_image.nginx.latest` to `docker_image.nginx.image_id`.
 
-Terraform will perform the following actions:
+```shell
+$ vi main.tf
+```
 
-  # docker_container.nginx will be created
-  + resource "docker_container" "nginx" {
-      + attach                                      = false
-      + bridge                                      = (known after apply)
-      + command                                     = (known after apply)
-      + container_logs                              = (known after apply)
-      + container_read_refresh_timeout_milliseconds = 15000
-      + entrypoint                                  = (known after apply)
-      + env                                         = (known after apply)
-      + exit_code                                   = (known after apply)
-      + hostname                                    = (known after apply)
-      + id                                          = (known after apply)
-      + image                                       = (known after apply)
-      + init                                        = (known after apply)
-      + ipc_mode                                    = (known after apply)
-      + log_driver                                  = (known after apply)
-      + logs                                        = false
-      + memory_reservation                          = 0
-      + must_run                                    = true
-      + name                                        = "training"
-      + network_data                                = (known after apply)
-      + network_mode                                = "bridge"
-      + platform                                    = (known after apply)
-      + read_only                                   = false
-      + remove_volumes                              = true
-      + restart                                     = "no"
-      + rm                                          = false
-      + runtime                                     = (known after apply)
-      + security_opts                               = (known after apply)
-      + shm_size                                    = (known after apply)
-      + start                                       = true
-      + stdin_open                                  = false
-      + stop_signal                                 = (known after apply)
-      + stop_timeout                                = (known after apply)
-terraform {
-      + tty                                         = false
-      + wait                                        = false
-      + wait_timeout                                = 60
+### Second attempt (rate limit error)
 
-      + healthcheck (known after apply)
+```shell
+$ terraform apply
+```
 
-      + labels (known after apply)
-
-      + ports {
-          + external = 80
-          + internal = 80
-          + ip       = "0.0.0.0"
-          + protocol = "tcp"
-        }
-    }
-
-  # docker_image.nginx will be created
-  + resource "docker_image" "nginx" {
-      + id          = (known after apply)
-      + image_id    = (known after apply)
-      + name        = "nginx:latest"
-      + repo_digest = (known after apply)
-    }
-
-Plan: 2 to add, 0 to change, 0 to destroy.
-
-Do you want to perform these actions?
-  Terraform will perform the actions described above.
-  Only 'yes' will be accepted to approve.
-
-  Enter a value: yes
-
-docker_image.nginx: Creating...
-╷
-│ Error: Unable to read Docker image into resource: unable to find or pull image nginx:latest
-│
-│   with docker_image.nginx,
-│   on main.tf line 19, in resource "docker_image" "nginx":
-│   19: resource "docker_image" "nginx" {
-│
-╵
-```sonrics@mac terraform-demo % vi main.tf
-sonrics@mac terraform-demo % terraform apply```
-
+```
 Terraform used the selected providers to generate the following execution plan. Resource actions are indicated
 with the following symbols:
   + create
@@ -460,183 +475,27 @@ docker_image.nginx: Creating...
 │   18: resource "docker_image" "nginx" {
 │
 ╵
-```sonrics@mac terraform-demo % terraform apply```
+```
 
-Terraform used the selected providers to generate the following execution plan. Resource actions are indicated
-with the following symbols:
-  + create
+### Authenticate with Docker Hub
 
-Terraform will perform the following actions:
+```shell
+$ docker login
+```
 
-  # docker_container.nginx will be created
-  + resource "docker_container" "nginx" {
-      + attach                                      = false
-      + bridge                                      = (known after apply)
-      + command                                     = (known after apply)
-      + container_logs                              = (known after apply)
-      + container_read_refresh_timeout_milliseconds = 15000
-      + entrypoint                                  = (known after apply)
-      + env                                         = (known after apply)
-      + exit_code                                   = (known after apply)
-      + hostname                                    = (known after apply)
-      + id                                          = (known after apply)
-      + image                                       = (known after apply)
-      + init                                        = (known after apply)
-      + ipc_mode                                    = (known after apply)
-      + log_driver                                  = (known after apply)
-      + logs                                        = false
-      + memory_reservation                          = 0
-      + must_run                                    = true
-      + name                                        = "training"
-      + network_data                                = (known after apply)
-      + network_mode                                = "bridge"
-      + platform                                    = (known after apply)
-      + read_only                                   = false
-      + remove_volumes                              = true
-      + restart                                     = "no"
-      + rm                                          = false
-      + runtime                                     = (known after apply)
-      + security_opts                               = (known after apply)
-      + shm_size                                    = (known after apply)
-      + start                                       = true
-      + stdin_open                                  = false
-      + stop_signal                                 = (known after apply)
-      + stop_timeout                                = (known after apply)
-      + tty                                         = false
-      + wait                                        = false
-      + wait_timeout                                = 60
-
-      + healthcheck (known after apply)
-
-      + labels (known after apply)
-
-      + ports {
-          + external = 80
-          + internal = 80
-          + ip       = "0.0.0.0"
-          + protocol = "tcp"
-        }
-    }
-
-  # docker_image.nginx will be created
-  + resource "docker_image" "nginx" {
-      + id          = (known after apply)
-      + image_id    = (known after apply)
-      + name        = "nginx:latest"
-      + repo_digest = (known after apply)
-    }
-
-Plan: 2 to add, 0 to change, 0 to destroy.
-
-Do you want to perform these actions?
-  Terraform will perform the actions described above.
-  Only 'yes' will be accepted to approve.
-
-  Enter a value: yes
-
-docker_image.nginx: Creating...
-╷
-│ Error: Unable to read Docker image into resource: unable to pull image nginx:latest: error pulling image nginx:latest: Error response from daemon: error from registry: You have reached your unauthenticated pull rate limit. https://www.docker.com/increase-rate-limit
-│
-│   with docker_image.nginx,
-│   on main.tf line 18, in resource "docker_image" "nginx":
-│   18: resource "docker_image" "nginx" {
-│
-╵
-```sonrics@mac terraform-demo % docker login```
+```
 Authenticating with existing credentials... [Username: sonrics11]
 
-i Info → To login with a different account, run 'docker logout' followed by 'docker login'
-
-
 Login Succeeded
-```sonrics@mac terraform-demo % terraform apply```
+```
 
-Terraform used the selected providers to generate the following execution plan. Resource actions are indicated
-with the following symbols:
-  + create
+### Third attempt (successful)
 
-Terraform will perform the following actions:
+```shell
+$ terraform apply
+```
 
-  # docker_container.nginx will be created
-  + resource "docker_container" "nginx" {
-      + attach                                      = false
-      + bridge                                      = (known after apply)
-      + command                                     = (known after apply)
-      + container_logs                              = (known after apply)
-      + container_read_refresh_timeout_milliseconds = 15000
-      + entrypoint                                  = (known after apply)
-      + env                                         = (known after apply)
-      + exit_code                                   = (known after apply)
-      + hostname                                    = (known after apply)
-      + id                                          = (known after apply)
-      + image                                       = (known after apply)
-      + init                                        = (known after apply)
-      + ipc_mode                                    = (known after apply)
-      + log_driver                                  = (known after apply)
-      + logs                                        = false
-      + memory_reservation                          = 0
-      + must_run                                    = true
-      + name                                        = "training"
-      + network_data                                = (known after apply)
-      + network_mode                                = "bridge"
-      + platform                                    = (known after apply)
-      + read_only                                   = false
-      + remove_volumes                              = true
-      + restart                                     = "no"
-      + rm                                          = false
-      + runtime                                     = (known after apply)
-      + security_opts                               = (known after apply)
-      + shm_size                                    = (known after apply)
-      + start                                       = true
-      + stdin_open                                  = false
-      + stop_signal                                 = (known after apply)
-      + stop_timeout                                = (known after apply)
-      + tty                                         = false
-      + wait                                        = false
-      + wait_timeout                                = 60
-
-      + healthcheck (known after apply)
-
-      + labels (known after apply)
-
-      + ports {
-          + external = 80
-          + internal = 80
-          + ip       = "0.0.0.0"
-          + protocol = "tcp"
-        }
-    }
-
-  # docker_image.nginx will be created
-  + resource "docker_image" "nginx" {
-      + id          = (known after apply)
-      + image_id    = (known after apply)
-      + name        = "nginx:latest"
-      + repo_digest = (known after apply)
-    }
-
-Plan: 2 to add, 0 to change, 0 to destroy.
-
-Do you want to perform these actions?
-  Terraform will perform the actions described above.
-  Only 'yes' will be accepted to approve.
-
-  Enter a value: yes
-
-docker_image.nginx: Creating...
-╷
-│ Error: Unable to read Docker image into resource: unable to pull image nginx:latest: error pulling image nginx:latest: Error response from daemon: error from registry: You have reached your unauthenticated pull rate limit. https://www.docker.com/increase-rate-limit
-│
-│   with docker_image.nginx,
-terraform {
-│   on main.tf line 18, in resource "docker_image" "nginx":
-│   18: resource "docker_image" "nginx" {
-│
-╵
-```sonrics@mac terraform-demo % vi main.tf
-sonrics@mac terraform-demo % terraform apply```
-
+```
 Terraform used the selected providers to generate the following execution plan. Resource actions are indicated
 with the following symbols:
   + create
@@ -715,7 +574,15 @@ docker_container.nginx: Creating...
 docker_container.nginx: Creation complete after 0s [id=3ee8fdd54e48dcfec0e72566cf5cb09362670c53d765b2a822f18d6924adc56e]
 
 Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
-```sonrics@mac terraform-demo % terraform destroy```
+```
+
+## Destroy Infrastructure
+
+```shell
+$ terraform destroy
+```
+
+```
 docker_image.nginx: Refreshing state... [id=sha256:7f0adca1fc6c29c8dc49a2e90037a10ba20dc266baaed0988e9fb4d0d8b85ba0nginx:latest]
 docker_container.nginx: Refreshing state... [id=3ee8fdd54e48dcfec0e72566cf5cb09362670c53d765b2a822f18d6924adc56e]
 
@@ -765,7 +632,6 @@ Terraform will perform the following actions:
               - ip_prefix_length          = 16
               - mac_address               = "16:39:c4:8a:99:7e"
               - network_name              = "bridge"
-                # (2 unchanged attributes hidden)
             },
         ] -> null
       - network_mode                                = "bridge" -> null
@@ -789,7 +655,6 @@ Terraform will perform the following actions:
       - tty                                         = false -> null
       - wait                                        = false -> null
       - wait_timeout                                = 60 -> null
-        # (7 unchanged attributes hidden)
 
       - ports {
           - external = 80 -> null
@@ -821,3 +686,26 @@ docker_image.nginx: Destroying... [id=sha256:7f0adca1fc6c29c8dc49a2e90037a10ba20
 docker_image.nginx: Destruction complete after 0s
 
 Destroy complete! Resources: 2 destroyed.
+```
+
+## Summary
+
+This session demonstrated:
+1. Installing Terraform via Homebrew
+2. Creating a Terraform configuration for Docker resources
+3. Troubleshooting common errors:
+   - Typo in repository name (`hashicorpt` vs `hashicorp`)
+   - Markdown syntax in configuration file (`hcl` marker)
+   - Invalid attribute reference (`.latest` vs `.image_id`)
+   - Docker Hub rate limiting (solved with `docker login`)
+4. Successfully applying the configuration to create infrastructure
+5. Destroying the infrastructure when no longer needed
+
+## Common Issues and Solutions
+
+| Issue | Solution |
+|-------|----------|
+| Repository not found | Verify correct spelling: `hashicorp/tap` not `hashicorpt/tap` |
+| `hcl` marker in config file | Remove markdown syntax from `.tf` files |
+| Invalid attribute reference | Use `image_id` instead of `latest` for docker_image resource |
+| Docker Hub rate limit | Authenticate with `docker login` before pulling images |
